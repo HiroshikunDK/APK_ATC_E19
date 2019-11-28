@@ -77,7 +77,7 @@ private:
 	koordinates loweKoor;
 };
 
-bool Airspace::isInsideAirSpace(Plane k)
+bool Airspace::isInsideAirSpace(const Plane k)
 {
 	if (this->loweKoor <= k.currKoor)
 	{
@@ -97,8 +97,7 @@ public:
 	};
 	ControlTower() {};
 
-	bool collisionDetection();
-	void isInsideAirspace();
+	void collisionDetection();
 	void changeCourse();
 	void printObj();
 	void objRecieve();
@@ -108,5 +107,4 @@ public:
 private:
 	Airspace _airSpace = Airspace();
 	vector<Plane> _objList = vector<Plane>();
-	vector<Plane>::iterator ptr; //brug af iterator.
 };
