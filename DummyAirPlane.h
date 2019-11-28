@@ -1,6 +1,9 @@
 #pragma once
 #include <stdlib.h>
-#include "../../boost_1_71_0/boost_1_71_0/libs/" //my filepath to downloaded boost
+#include <iostream>
+#include <boost/signals2/signal.hpp>
+//https://www.boost.org/doc/libs/1_55_0/more/getting_started/windows.html
+//Look at step 4.1 - this should make it work 
 
 using namespace std;
 
@@ -8,43 +11,91 @@ struct koordinates
 {
 	double _longtitude = 5;
 	double _latitude = 5;
-	double _altitude = 5;
+	double _altitude = 5; // In Metric  
+
+	inline bool operator <(const koordinates& rhs)
+	{
+		if ((_latitude < rhs._latitude) && (_longtitude < rhs._longtitude))
+		{
+			return true;
+		}
+		else { return false; }
+	}
+	inline bool operator <=(const koordinates& rhs)
+	{
+		if ((_latitude <= rhs._latitude) && (_longtitude <= rhs._longtitude))
+		{
+			return true;
+		}
+		else { return false; }
+	}
+	inline bool operator >(const koordinates& rhs)
+	{
+		if ((_latitude > rhs._latitude) && (_longtitude > rhs._longtitude))
+		{
+			return true;
+		}
+		else { return false; }
+	}
+	inline bool operator >=(const koordinates& rhs)
+	{
+		if ((_latitude >= rhs._latitude) && (_longtitude >= rhs._longtitude))
+		{
+			return true;
+		}
+		else { return false; }
+	}
+	inline bool operator ==(const koordinates& rhs)
+	{
+		if ((_latitude == rhs._latitude) && (_longtitude == rhs._longtitude))
+		{
+			return true;
+		}
+		else { return false; }
+	}
 };
 
 class Plane
 {
 public:
-	koordinates previousKoordinates;
-	koordinates currentKoordinates;
+	koordinates prevKoor;
+	koordinates currKoor;
+	
 private:
 	string name = "none";
 	string type = "none";
-
 };
 
-/*
-class ControlFunctions 
+class Airspace
 {
 public:
-	virtual bool collisionDetection();
-	virtual void isInsideAirspace();
-	virtual void changeCourse();
-	virtual void printObj();
-	virtual void objRecieve();
-	virtual void objUpdate();
-	virtual void objRemove();
-}
-*/
+	Airspace() {}
+	virtual bool isInsideAirSpace(Plane);
+private:
+	string name = "none";
+	koordinates uppeKoor;
+	koordinates loweKoor;
+};
 
-template <class T : Plane, class A>
-class ControlTower : ControlFunctions
+bool Airspace::isInsideAirSpace(Plane k)
+{
+	if (this->loweKoor <= k.currKoor)
+	{
+		if (this->uppeKoor >= k.currKoor) { return true; }
+		else { return false; }
+	}
+	else { return false; }
+};
+
+class ControlTower
 {
 public:
-	ControlTower(T newObjList, A newAirSpace) 
+	ControlTower(vector<Plane> newObjList, Airspace newAirSpace)
 	{
 		_objList = newObjList;
 		_airSpace = newAirSpace;
 	};
+	ControlTower() {};
 
 	bool collisionDetection();
 	void isInsideAirspace();
@@ -53,9 +104,9 @@ public:
 	void objRecieve();
 	void objUpdate();
 	void objRemove();
-	
+
 private:
-	A _airSpace = null;
-	vector<T> _objList = null;
-	vector<T>::iterator ptr; //brug af iterator.
-}
+	Airspace _airSpace = Airspace();
+	vector<Plane> _objList = vector<Plane>();
+	vector<Plane>::iterator ptr; //brug af iterator.
+};
