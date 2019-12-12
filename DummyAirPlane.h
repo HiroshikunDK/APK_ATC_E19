@@ -9,9 +9,18 @@ using namespace std;
 
 struct koordinates
 {
-	double _longtitude = 5;
-	double _latitude = 5;
-	double _altitude = 5; // In Metric  
+	double _longtitude = 5; // In Metric?
+	double _latitude = 5; // In Metric?
+	double _altitude = 5; // In Metric?
+
+	string printKoor() 
+	{
+		string resString;
+		resString.append("Longtitude:	" + to_string(_longtitude) +"\n");
+		resString.append("Latitude:		" + to_string(_latitude) + "\n");
+		resString.append("Altitude:		" + to_string(_altitude) + "\n");
+		return resString;
+	}
 
 	inline bool operator <(const koordinates& rhs)
 	{
@@ -57,6 +66,7 @@ struct koordinates
 
 class Plane
 {
+	friend class ControlTower;
 public:
 	koordinates prevKoor;
 	koordinates currKoor;
@@ -97,12 +107,16 @@ public:
 	};
 	ControlTower() {};
 
-	void collisionDetection();
-	void changeCourse();
-	void printObj();
-	void objRecieve();
-	void objUpdate();
-	void objRemove();
+	vector<Plane&> collisionDetection(vector<Plane>* inVector); //iterator
+	template<class T>
+	bool objExistInVec(const vector<T> inVector, T obj); // template magic 
+	void changeCourse(); //metaprogrammering?
+	void printObj(Plane obj); // 
+	void printAllObj();
+	void objHandle(Plane obj); //c
+	void objRecieve(Plane obj);
+	void objUpdate(Plane obj);
+	void objRemove(Plane obj);
 
 private:
 	Airspace _airSpace = Airspace();
