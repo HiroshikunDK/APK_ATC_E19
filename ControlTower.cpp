@@ -182,7 +182,7 @@ void ControlTower::objUpdate(Plane obj)
 }
 void ControlTower::objRemove(Plane obj) 
 {
-	/*
+	
 	vector<Plane>::iterator ite;
 
 	for (ite = _objList.begin(); ite !=_objList.end(); ite++)
@@ -200,6 +200,56 @@ void ControlTower::objRemove(Plane obj)
 			cout << "Can't find the object to remove" << endl;
 		}
 	}
-	*/
 }
 
+bool ControlTower::checkInputChars(string rawstring) 
+{
+	cout << "Checking input string" << endl;
+	int cnt =  0;
+	for (char& c : rawstring) {
+		cnt++;
+		if ( c == '+' || c == '-' || c == '*' || c == '/')
+		{
+			throw "Mathematical Operations aren't Allowed";
+			return false;
+		}
+		
+	}
+	if (cnt > 8) 
+	{
+		throw "Input too long";
+		return false;
+	}
+	return true;
+}
+
+void ControlTower::objRemovebyName()
+{
+	try 
+	{
+		vector<Plane>::iterator ite;
+
+		string InputString;
+		cout << "Type Name of Plane to be removed: ";
+		cin >> InputString;
+
+		if (checkInputChars(InputString)) 
+		{
+			for (ite = _objList.begin(); ite != _objList.end(); ite++)
+			{
+				if (ite->name == InputString)
+				{
+					//this could be made better from Plane class.
+					_objList.erase(ite);
+					//is the pointer count now wrong if we were to delete multiple objects in this function?
+					// no check of other mutations on the plane class eg. type
+					return;
+				}
+			}
+		}
+	} catch (const char* msg) 
+	{
+		cerr << msg << endl;
+		objRemovebyName();
+	}
+}

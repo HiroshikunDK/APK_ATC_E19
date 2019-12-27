@@ -12,9 +12,14 @@ int main()
     vector<Plane> tmpList;
     Airspace tmpAir = Airspace(); 
     ControlTower CT = ControlTower(tmpList, tmpAir);
-    Plane P = Plane("DC123");
+    Plane P1 = Plane("DC123");
+    Plane P2 = Plane("AC130");
+    Plane P3 = Plane("RCXD10");
     
-    CT.objHandle(P);
+    CT.objHandle(P1);
+    CT.objHandle(P2);
+    CT.objHandle(P3);
+    CT.objRemovebyName();
     CT.printAllObj();
 
 }

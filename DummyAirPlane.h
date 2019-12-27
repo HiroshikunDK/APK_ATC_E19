@@ -161,6 +161,8 @@ public:
 	void objRecieve(Plane obj);
 	void objUpdate(Plane obj);
 	void objRemove(Plane obj);
+	bool checkInputChars(string rawS);
+	void objRemovebyName();
 
 private:
 	Airspace _airSpace = Airspace();
