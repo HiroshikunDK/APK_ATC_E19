@@ -1,3 +1,5 @@
+#pragma once
+
 #include "./DummyAirPlane.h"
 // AirTrafficControl.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
@@ -6,7 +8,15 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Start Air Traffic Control\n";
+    vector<Plane> tmpList;
+    Airspace tmpAir = Airspace(); 
+    ControlTower CT = ControlTower(tmpList, tmpAir);
+    Plane P = Plane("DC123");
+    
+    CT.objHandle(P);
+    CT.printAllObj();
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

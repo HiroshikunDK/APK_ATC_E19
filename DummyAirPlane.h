@@ -64,10 +64,36 @@ struct koordinates
 	}
 };
 
+
+
+
+
 class Plane
 {
 	friend class ControlTower;
 public:
+	Plane(string nm)
+	{
+		name = nm;
+		koordinates kp;
+		kp._altitude = 12345;
+		kp._latitude = 12345;
+		kp._longtitude = 12345;
+
+		prevKoor = kp;
+
+		koordinates kc;
+		kc._altitude = 98745;
+		kc._latitude = 98745;
+		kc._longtitude = 98745;
+
+		prevKoor = kc;
+	};
+	void commandPlane(string cmd) 
+	{
+		cout << "Command: " << cmd << ", by Plane: " << name << endl;
+	}
+
 	koordinates prevKoor;
 	koordinates currKoor;
 	
@@ -76,26 +102,44 @@ private:
 	string type = "none";
 };
 
+
 class Airspace
 {
 public:
-	Airspace() {}
-	virtual bool isInsideAirSpace(Plane);
+	Airspace() 
+	{
+		koordinates LowKoor;
+		LowKoor._altitude = 1000;
+		LowKoor._latitude = 1000;
+		LowKoor._longtitude = 1000;
+
+		loweKoor = LowKoor;
+
+		koordinates HighKoor;
+		HighKoor._altitude = 99999;
+		HighKoor._latitude = 99999;
+		HighKoor._longtitude = 99999;
+
+		uppeKoor = HighKoor;
+	}
+
+	bool isInsideAirSpace(const Plane k)
+	{
+		if (this->loweKoor <= k.currKoor)
+		{
+			if (this->uppeKoor >= k.currKoor) { return true; }
+			else { return false; }
+		}
+		else { return false; }
+	};
+
 private:
 	string name = "none";
 	koordinates uppeKoor;
 	koordinates loweKoor;
 };
 
-bool Airspace::isInsideAirSpace(const Plane k)
-{
-	if (this->loweKoor <= k.currKoor)
-	{
-		if (this->uppeKoor >= k.currKoor) { return true; }
-		else { return false; }
-	}
-	else { return false; }
-};
+
 
 class ControlTower
 {
@@ -107,9 +151,9 @@ public:
 	};
 	ControlTower() {};
 
-	vector<Plane&> collisionDetection(vector<Plane>* inVector); //iterator
-	template<class T>
-	bool objExistInVec(const vector<T> inVector, T obj); // template magic 
+	vector<Plane> collisionDetection(vector<Plane> inVector); //iterator
+	//void initilizeCom(planespawner)
+	bool objExistInVec(const vector<Plane> inVector, Plane obj); //  
 	void changeCourse(); //metaprogrammering?
 	void printObj(Plane obj); // 
 	void printAllObj();
@@ -121,4 +165,6 @@ public:
 private:
 	Airspace _airSpace = Airspace();
 	vector<Plane> _objList = vector<Plane>();
+	
+	
 };

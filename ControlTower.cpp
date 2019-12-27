@@ -1,3 +1,5 @@
+
+#pragma once
 #include <iostream>
 #include <stdlib.h>
 
@@ -6,16 +8,61 @@
 
 using namespace std;
 
-vector<Plane&> ControlTower::collisionDetection(vector<Plane>* inVector)
+
+vector<Plane> ControlTower::collisionDetection(vector<Plane> inVector)
 {
+	/*
+	vector<Plane&> resultVec;
+	vector<Plane> tempVec;
+
+	int delta = 0;
+	for (int i = 0 ; i < inVector->size(); i++)
+	{
+
+		for (int j = 0; j < inVector->size(); j++)
+		{
+			if ((i != j))
+			{
+				//TODO: think a operator overload on Plane here - could be nicer
+				delta = inVector->at(i).currKoor._altitude - inVector->at(j).currKoor._altitude;
+				if (delta > -500 && delta < 500)
+				{
+					delta = inVector->at(i).currKoor._longtitude - inVector->at(j).currKoor._longtitude;
+					if (delta > -500 && delta < 500)
+					{
+						delta = inVector->at(i).currKoor._latitude - inVector->at(i).currKoor._latitude;
+						if (delta > -500 && delta < 500)
+						{
+							//converts vector of Plane pointers to a vector of planes
+							for (int k = 0; k < tempVec.size(); k++)
+							{
+								tempVec.push_back(inVector->at(i));
+							}
+
+							//conversion  over
+							if (objExistInVec(tempVec, inVector->at(i)) != true)
+							{
+								//Skulle itinner ikke være lovligt at gemme i et vector<Plane&>
+								//måske fordi det er en iterator pointer, men det objekt jeg caster 
+								//til, stadig den samme som det i den originale vector? ¯\_(:/)_/¯ 
+								resultVec.push_back(inVector->at(i));
+							}
+						}
+					}
+				}
+			}
+		}
+	}*/
+		/*
 		vector<Plane>::iterator itinner;
 		vector<Plane>::iterator itouter;
 		vector<Plane&>::iterator itconv;
 		vector<Plane&> resultVec;
 		vector<Plane> tempVec;
 		int delta = 0;
-		for (itouter = inVector->begin(); itouter != inVector->end(); itouter++)
+		for (itouter = inVector.begin(); itouter != inVector.end(); itouter++)
 		{
+			
 			for (itinner = inVector->begin(); itinner != inVector->end(); itinner++)
 			{
 				if ((itouter->name != itinner->name)) 
@@ -48,29 +95,44 @@ vector<Plane&> ControlTower::collisionDetection(vector<Plane>* inVector)
 					}
 				}
 			}
-		}
+		}*/
+	vector<Plane> pv = vector<Plane>();
+	return pv;
 }
-template<class T>
-bool ControlTower::objExistInVec(const vector<T> inVector,const T obj)
+//none specialized template function.
+bool ControlTower::objExistInVec(const vector<Plane> inVector,const Plane obj)
 {
-	vector<T>::const_iterator it;
-
-	for (it = inVector->begin(); it != inVector->end(); it++) 
+	/*
+	for (int i = 0; i > inVector.size(); i++)
 	{
-		if (it == obj) 
+		if (inVector[i] == obj)
+		{
+			return true;
+		}
+	}
+
+	return false;
+	*/
+	
+	vector<Plane>::const_iterator it;
+
+	for (it = inVector.begin(); it != inVector.end(); it++)
+	{
+		if (it->name == obj.name) 
 		{
 			return true;
 		}
 	}
 	return false;
+
 }
 
 void ControlTower::changeCourse() {} //meta programming here?
 
 void ControlTower::printAllObj()
 {
-	Plane temp;
-	for (int i = 0; i > _objList.size(); i++) 
+	Plane temp = Plane("TEMP");
+	for (int i = 0; i < _objList.size(); i++) 
 	{
 		cout << "Plane " << to_string(i) << ":" << endl;
 		printObj(_objList[i]);
@@ -120,6 +182,7 @@ void ControlTower::objUpdate(Plane obj)
 }
 void ControlTower::objRemove(Plane obj) 
 {
+	/*
 	vector<Plane>::iterator ite;
 
 	for (ite = _objList.begin(); ite !=_objList.end(); ite++)
@@ -137,4 +200,6 @@ void ControlTower::objRemove(Plane obj)
 			cout << "Can't find the object to remove" << endl;
 		}
 	}
+	*/
 }
+
