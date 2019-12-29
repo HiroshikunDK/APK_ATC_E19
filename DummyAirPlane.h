@@ -143,6 +143,7 @@ private:
 
 class ControlTower
 {
+	friend class Communications;
 public:
 	ControlTower(vector<Plane> newObjList, Airspace newAirSpace)
 	{
@@ -163,6 +164,7 @@ public:
 	void objRemove(Plane obj);
 	bool checkInputChars(string rawS);
 	void objRemovebyName();
+	void changePlaneHeight(string name, int newHeight);
 
 private:
 	Airspace _airSpace = Airspace();

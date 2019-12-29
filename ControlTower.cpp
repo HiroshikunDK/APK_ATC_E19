@@ -253,3 +253,25 @@ void ControlTower::objRemovebyName()
 		objRemovebyName();
 	}
 }
+
+void ControlTower::changePlaneHeight(string name, int newHeight) 
+{
+	//try {
+		for (int i = 0; i < _objList.size(); i++)
+		{
+			if (_objList[i].name == name)
+			{
+				_objList[i].currKoor._altitude = newHeight; 
+
+				cout << "Name Found and Changed" << endl;
+
+				printObj(_objList[i]);
+				return;
+			}
+		}
+		//throw name + ", Not found - Altitude Change failed";
+	//} catch (const char* msg)
+	//{
+	//	cerr << msg << endl;
+	//}
+}
