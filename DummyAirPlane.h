@@ -165,6 +165,7 @@ public:
 	bool checkInputChars(string rawS);
 	void objRemovebyName();
 	void changePlaneHeight(string name, int newHeight);
+	void broadcastHeightChange(string name, int newHeight);
 
 private:
 	Airspace _airSpace = Airspace();

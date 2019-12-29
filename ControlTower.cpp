@@ -5,6 +5,9 @@
 
 #include "boost/signals2/signal.hpp"
 #include "./DummyAirPlane.h"
+#include "signals2.h"
+#include "AirTrafficControl.h"
+
 
 using namespace std;
 
@@ -274,4 +277,11 @@ void ControlTower::changePlaneHeight(string name, int newHeight)
 	//{
 	//	cerr << msg << endl;
 	//}
+}
+
+
+void ControlTower::broadcastHeightChange(string name, int newHeight) 
+{
+	//Broadcaster should notify all objects needed.
+	broadcastAllHeightChange(name, newHeight);
 }

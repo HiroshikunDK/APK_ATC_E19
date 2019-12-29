@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "./DummyAirPlane.h"
 #include "Signals2.h"
@@ -8,32 +8,44 @@
 
 #include <iostream>
 
+//Setup af kontrol objekter - skal være global
 vector<Plane> tmpList;
 Airspace tmpAir = Airspace();
 ControlTower CT = ControlTower(tmpList, tmpAir);
-//ControlTower* ptrCT= &CT;
 
-void changeHeightFunction(ControlTower* ptrCT,string name, int newheight)
+//oprettelse af signal og dets parameter -skal være global
+boost::signals2::signal<void(ControlTower*, string, int)> sig;
+
+
+//disse funktioner kaldes og wrapper andre klassers implementering af  change height. 
+void changeHeightFunction(ControlTower* ptrCT1, string name, int newheight)
 {
     cout << "Hello world" << endl;
+    ptrCT1->changePlaneHeight(name, newheight);
+    ptrCT1->printAllObj();
+    cout << "Test ended" << endl;
+}
+
+void changeHeightFunctionTest(ControlTower* ptrCT, string name, int newheight)
+{
+    //cout << "Hello world" << endl;
     ptrCT->changePlaneHeight(name, newheight);
     ptrCT->printAllObj();
     cout << "Test ended" << endl;
 }
 
-
-int main()
+// 
+void broadcastAllHeightChange(string name, int newheigh)
 {
-    std::cout << "Start Air Traffic Control\n";
+    sig(&CT, "DC123", 9001);
+}
 
-    vector<Plane> tmpList;
-    Airspace tmpAir = Airspace(); 
-    ControlTower CT = ControlTower(tmpList, tmpAir);
-
-    boost::signals2::signal<void(ControlTower*,string, int)> sig;
+void InitializeSystem() 
+{   
+    //forbind en funktion til signalet
     sig.connect(&changeHeightFunction);
-
-    Communications com(&CT);
+    
+    //Communications com(&CT);
     //com.ChangeHeightSignal.connect(&changeHeightFunction);
     /*
     signalfunctor func;
@@ -41,11 +53,13 @@ int main()
     func.name = "DC123";
     func.newhieght = 9001;
     */
+    //sigAlt.connect(func()); 
+
 
     Plane P1 = Plane("DC123");
     Plane P2 = Plane("AC130");
     Plane P3 = Plane("RCXD10");
-    
+
     CT.objHandle(P1);
     CT.objHandle(P2);
     CT.objHandle(P3);
@@ -55,10 +69,20 @@ int main()
     cout << "The test" << endl;
 
     //CT.changePlaneHeight("DC123", 9001);
-    sig(&CT,"DC123", 9001);
-
+    //sig(&CT,"DC123", 9001);
+    //sigAlt("DC123", 9001);
+    CT.broadcastHeightChange("DC123", 9001);
     //boost::detail::Sleep(200);
     CT.printAllObj();
+
+}
+
+int main()
+{
+    std::cout << "Start Air Traffic Control\n";
+
+    InitializeSystem();
+    
 
 
 }
