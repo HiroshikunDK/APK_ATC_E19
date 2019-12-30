@@ -5,6 +5,8 @@
 #include "./DummyAirPlane.h"
 #include"./ControlTower.cpp"
 #include <Rpc.h>
+#include <random>
+#include <string>
 #pragma comment(lib, "Rpcrt4.lib")
 
 
@@ -32,10 +34,9 @@ void RandomPlaneGenerator::GeneratePlanes()
 		planeAmount = planeAmount + 1;
 		for (x = existingPlanes.size(); x < planeAmount;x++) {
 
-			//Create Name For Plane
-			UUID newId;
-			UuidCreate(&newId);
-			Plane plane = new Plane(UuidToString(newId));
+
+			auto name = random_string(8);
+			Plane plane = new Plane(name);
 
 			koordinates coords = new koordinates();
 
@@ -91,6 +92,26 @@ void RandomPlaneGenerator::GeneratePlanes()
 
 		Sleep(1000);
 	}
+}
+
+
+std::string random_string(std::string::size_type length)
+{
+	static auto& chrs = "0123456789"
+		"abcdefghijklmnopqrstuvwxyz"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	thread_local static std::mt19937 rg{ std::random_device{}() };
+	thread_local static std::uniform_int_distribution<std::string::size_type> pick(0, sizeof(chrs) - 2);
+
+	std::string s;
+
+	s.reserve(length);
+
+	while (length--)
+		s += chrs[pick(rg)];
+
+	return s;
 }
 
 
