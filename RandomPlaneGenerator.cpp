@@ -21,13 +21,22 @@ void RandomPlaneGenerator::GeneratePlanes()
 		for (int j = 0; j < existingPlanes.size(); j++) {
 			planeAmount++;
 			
-			if(existingPlanes[j].name == "default")
-			{
-			auto ranName = random_string(8);
-			existingPlanes[j].name = ranName; //= new Plane(name);
-			}
 			koordinates coords = koordinates();
 
+
+			if(existingPlanes[j].name == "default")
+			{
+				auto ranName = random_string(8);
+				existingPlanes[j].name = ranName; //= new Plane(name);
+			
+				coords._longtitude = (rand() % 999) + 100000;
+				coords._latitude = (rand() % 999) + 100000;
+				coords._altitude = 6000;
+
+				existingPlanes[j].currKoor = coords;
+				existingPlanes[j].prevKoor = koordinates();
+			}
+			
 
 			if /*constexpr*/ (enviroment == "Test") //constexpr virker kun hvis enviroment er const
 			{
@@ -35,14 +44,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 				coords._latitude = 2000;
 				coords._altitude = 6000;
 			}
-			else {
-				coords._longtitude = (rand() % 999) + 100000;
-				coords._latitude = (rand() % 999) + 100000;
-				coords._altitude = 6000;
-			}
-			existingPlanes[j].currKoor = coords;
-			existingPlanes[j].prevKoor = koordinates();
-
+			
 			//Randomize Tragectory
 
 			koordinates tragectory = koordinates();
@@ -76,9 +78,10 @@ void RandomPlaneGenerator::GeneratePlanes()
 			
 			
 			Plane chosenPlane = *ite;
-			koordinates tragectory = nameToDirectionMap[chosenPlane.name]; //ændret til second, så man rammer koordinatet
+			koordinates tragectory = nameToDirectionMap[chosenPlane.name];
 			chosenPlane.prevKoor = chosenPlane.currKoor;
 			chosenPlane.currKoor = chosenPlane.currKoor - tragectory;
+			*ite = chosenPlane;
 			broadcastPlaneData(chosenPlane);
 			i++;
 		}
