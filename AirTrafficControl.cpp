@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <condition_variable>
+#include <thread>
 #include "./DummyAirPlane.h"
 #include "Signals2.h"
 
@@ -15,6 +17,7 @@ ControlTower CT = ControlTower(tmpList, tmpAir);
 
 //oprettelse af signal og dets parameter -skal være global
 boost::signals2::signal<void(ControlTower*, string, int)> sig;
+boost::signals2::signal<void(ControlTower*, Plane)> PlaneSignal;
 
 
 //disse funktioner kaldes og wrapper andre klassers implementering af  change height. 
@@ -26,12 +29,12 @@ void changeHeightFunction(ControlTower* ptrCT1, string name, int newheight)
     cout << "Test ended" << endl;
 }
 
-void changeHeightFunctionTest(ControlTower* ptrCT, string name, int newheight)
+void transmitPlaneData(ControlTower* ptrCT, Plane newPlane)
 {
     //cout << "Hello world" << endl;
-    ptrCT->changePlaneHeight(name, newheight);
-    ptrCT->printAllObj();
-    cout << "Test ended" << endl;
+    ptrCT->objHandle(newPlane);
+    //ptrCT->printAllObj();
+    cout << "New plane handled" << endl;
 }
 
 // 
@@ -40,10 +43,16 @@ void broadcastAllHeightChange(string name, int newheigh)
     sig(&CT, "DC123", 9001);
 }
 
+void broadcastPlaneData(Plane newPlane)
+{
+    PlaneSignal(&CT, newPlane);
+}
+
 void InitializeSystem() 
 {   
     //forbind en funktion til signalet
     sig.connect(&changeHeightFunction);
+    PlaneSignal.connect(&transmitPlaneData);
     
     //Communications com(&CT);
     //com.ChangeHeightSignal.connect(&changeHeightFunction);
@@ -60,9 +69,10 @@ void InitializeSystem()
     Plane P2 = Plane("AC130");
     Plane P3 = Plane("RCXD10");
 
-    CT.objHandle(P1);
-    CT.objHandle(P2);
-    CT.objHandle(P3);
+    broadcastPlaneData(P1);
+    broadcastPlaneData(P2);
+    broadcastPlaneData(P3);
+
     CT.objRemovebyName();
     //CT.printAllObj();
 
@@ -82,6 +92,8 @@ int main()
     std::cout << "Start Air Traffic Control\n";
 
     InitializeSystem();
+
+
     
 
 
