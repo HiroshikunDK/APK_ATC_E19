@@ -6,5 +6,3 @@ void Communications::ctChangeHeight(string name, int newHeight)
 {
 	ct->changePlaneHeight(name, newHeight);
 }
-
-
