@@ -147,13 +147,14 @@ void ControlTower::printAllObj()
 void ControlTower::printObj(Plane obj) 
 {
 	cout << "Name: " << obj.name <<endl;
-	cout << "Type: " << obj.name << endl;
+	//cout << "Type: " << obj.name << endl;
 	cout << "Current Position: \n{\n" << obj.currKoor.printKoor() << "}" <<  endl;
-	cout << "Previous Position: \n{\n" << obj.prevKoor.printKoor() << "}" << endl;
+	//cout << "Previous Position: \n{\n" << obj.prevKoor.printKoor() << "}" << endl;
 }
 
 void ControlTower::objHandle(Plane obj)
 {
+	
 	if (objExistInVec(_objList, obj)!=true)
 	{
 		objRecieve(obj);
@@ -173,12 +174,17 @@ void ControlTower::objUpdate(Plane obj)
 	//the normal loop of a vector
 	for (int i = 0; i < _objList.size(); i++) 
 	{
+		
 		if (_objList[i].name == obj.name) 
 		{
 			//this could be made better from Plane class.
-			obj.prevKoor = _objList[i].currKoor;
+			//obj.prevKoor = _objList[i].currKoor;
 			_objList[i] = obj;
 			// no check of other mutations on the plane class eg. type
+			if (i == 0)
+			{
+				printObj(obj);
+			}
 			return;
 		}
 	}

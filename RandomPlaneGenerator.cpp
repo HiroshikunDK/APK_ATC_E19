@@ -3,7 +3,8 @@
 #include <map>
 #include "boost/signals2/signal.hpp"
 #include "./DummyAirPlane.h"
-#include"./ControlTower.cpp"
+#include "AirTrafficControl.h"
+#include "RandomPlaneGenerator.h"
 #include <Rpc.h>
 #include <random>
 #include <string>
@@ -12,36 +13,23 @@
 
 using namespace std;
 
-class RandomPlaneGenerator {
-
-
-private:
-	std::map<std::string, koordinates > nameToDirectionMap;
-	vector<Plane>::iterator existingPlanes;
-
-
-public:
-	string enviroment = "Production";
-RandomPlaneGenerator() {
-	_controlTower = controlTower;
-}
-
-
 void RandomPlaneGenerator::GeneratePlanes()
 {
-	int planeAmount = 7;
+	
 	while (true) {
-		planeAmount = planeAmount + 1;
-		for (x = existingPlanes.size(); x < planeAmount;x++) {
-
-
-			auto name = random_string(8);
-			Plane plane = new Plane(name);
-
-			koordinates coords = new koordinates();
-
+		int planeAmount = 0;
+		for (int j = 0; j < existingPlanes.size(); j++) {
+			planeAmount++;
 			
-			if constexpr (enviroment == "Test")
+			if(existingPlanes[j].name == "default")
+			{
+			auto ranName = random_string(8);
+			existingPlanes[j].name = ranName; //= new Plane(name);
+			}
+			koordinates coords = koordinates();
+
+
+			if /*constexpr*/ (enviroment == "Test") //constexpr virker kun hvis enviroment er const
 			{
 				coords._longtitude = 2000;
 				coords._latitude = 2000;
@@ -52,21 +40,21 @@ void RandomPlaneGenerator::GeneratePlanes()
 				coords._latitude = (rand() % 999) + 100000;
 				coords._altitude = 6000;
 			}
-			plane.currKoor = coords;
-			plane.prevKoor = new koordinates();
+			existingPlanes[j].currKoor = coords;
+			existingPlanes[j].prevKoor = koordinates();
 
 			//Randomize Tragectory
 
-			koordinates tragectory = new koordinates();
+			koordinates tragectory = koordinates();
 			switch ((rand() % 1) + 4)
 			{
 			case 1: // code to be executed if n = 1;
-				
-				tragectory._latitude = (rand() % -30) -10;
+
+				tragectory._latitude = (rand() % -30) - 10;
 				tragectory._longtitude = (rand() % -30) - 10;
 				break;
 			case 2: // code to be executed if n = 2;
-				tragectory._latitude = (rand() % 30) +10;
+				tragectory._latitude = (rand() % 30) + 10;
 				tragectory._longtitude = (rand() % -30) - 10;
 				break;
 			case 3:
@@ -79,45 +67,26 @@ void RandomPlaneGenerator::GeneratePlanes()
 
 			}
 
-			nameToDirectionMap.insert(UuidToString(newId),tragectory)
+			nameToDirectionMap.insert({existingPlanes[j].name, tragectory});
 		}
+		cout << "Updates loaded into maps: " << to_string(existingPlanes.size()) << endl;
 
-		for (int a = 0; a < existingPlanes.size()-1; a = a + 1) {
-			auto chosenPlane = existingPlanes[a];
-			auto tragectory = nameToDirectionMap.find(chosenPlane.name);
+		int i = 0;
+		for (auto ite = existingPlanes.begin(); ite < existingPlanes.end(); ite++) {
+			
+			
+			Plane chosenPlane = *ite;
+			koordinates tragectory = nameToDirectionMap[chosenPlane.name]; //ændret til second, så man rammer koordinatet
 			chosenPlane.prevKoor = chosenPlane.currKoor;
 			chosenPlane.currKoor = chosenPlane.currKoor - tragectory;
 			broadcastPlaneData(chosenPlane);
+			i++;
 		}
 
 		Sleep(1000);
 	}
 }
 
-//https://stackoverflow.com/questions/440133/how-do-i-create-a-random-alpha-numeric-string-in-c Based on the answers in this thread
-std::string random_string(std::string::size_type length)
-{
-	static auto& chrs = "0123456789"
-		"abcdefghijklmnopqrstuvwxyz"
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-	thread_local static std::mt19937 rg{ std::random_device{}() };
-	thread_local static std::uniform_int_distribution<std::string::size_type> pick(0, sizeof(chrs) - 2);
-
-	std::string s;
-
-	s.reserve(length);
-
-	while (length--)
-		s += chrs[pick(rg)];
-
-	return s;
-}
-
-
-
-	
-};
 
 
 

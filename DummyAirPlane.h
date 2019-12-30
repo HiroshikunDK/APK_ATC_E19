@@ -33,10 +33,13 @@ struct koordinates
 		else { return false; }
 	}
 
-	inline bool operator -(const koordinates& rhs)
+	koordinates operator -(const koordinates& rhs)
 	{
-		_latitude = subtract(_latitude, rhs._latitude);
-		_longtitude = subtract(_longtitude, rhs._longtitude);
+		koordinates res;
+		res._latitude = subtract(_latitude, rhs._latitude);
+		res._longtitude = subtract(_longtitude, rhs._longtitude);
+		res._altitude = _altitude;
+		return res;
 	}
 
 	inline bool operator <=(const koordinates& rhs)

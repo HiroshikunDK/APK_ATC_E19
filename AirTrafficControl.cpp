@@ -4,6 +4,7 @@
 #include <thread>
 #include "./DummyAirPlane.h"
 #include "Signals2.h"
+#include "RandomPlaneGenerator.h"
 
 // AirTrafficControl.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
@@ -54,6 +55,9 @@ void InitializeSystem()
     sig.connect(&changeHeightFunction);
     PlaneSignal.connect(&transmitPlaneData);
     
+    RandomPlaneGenerator rpg("");
+    cout << "The test" << endl;
+    rpg.GeneratePlanes();
     //Communications com(&CT);
     //com.ChangeHeightSignal.connect(&changeHeightFunction);
     /*
@@ -64,7 +68,7 @@ void InitializeSystem()
     */
     //sigAlt.connect(func()); 
 
-
+    /*
     Plane P1 = Plane("DC123");
     Plane P2 = Plane("AC130");
     Plane P3 = Plane("RCXD10");
@@ -74,16 +78,17 @@ void InitializeSystem()
     broadcastPlaneData(P3);
 
     CT.objRemovebyName();
+    */
     //CT.printAllObj();
 
-    cout << "The test" << endl;
+   
 
     //CT.changePlaneHeight("DC123", 9001);
     //sig(&CT,"DC123", 9001);
     //sigAlt("DC123", 9001);
-    CT.broadcastHeightChange("DC123", 9001);
+    //CT.broadcastHeightChange("DC123", 9001);
     //boost::detail::Sleep(200);
-    CT.printAllObj();
+    //CT.printAllObj();
 
 }
 
