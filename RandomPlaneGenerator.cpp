@@ -19,7 +19,7 @@ private:
 
 
 public:
-
+	string enviroment = "Production";
 RandomPlaneGenerator() {
 	_controlTower = controlTower;
 }
@@ -38,10 +38,19 @@ void RandomPlaneGenerator::GeneratePlanes()
 			Plane plane = new Plane(UuidToString(newId));
 
 			koordinates coords = new koordinates();
-			coords._longtitude = (rand() % 999) + 100000;
-			coords._latitude = (rand() % 999) + 100000;
-			coords._altitude = 6000;
 
+			
+			if constexpr (enviroment == "Test")
+			{
+				coords._longtitude = 2000;
+				coords._latitude = 2000;
+				coords._altitude = 6000;
+			}
+			else {
+				coords._longtitude = (rand() % 999) + 100000;
+				coords._latitude = (rand() % 999) + 100000;
+				coords._altitude = 6000;
+			}
 			plane.currKoor = coords;
 			plane.prevKoor = new koordinates();
 
@@ -78,7 +87,6 @@ void RandomPlaneGenerator::GeneratePlanes()
 			chosenPlane.prevKoor = chosenPlane.currKoor;
 			chosenPlane.currKoor = chosenPlane.currKoor - tragectory;
 			broadcastPlaneData(chosenPlane);
-
 		}
 
 		Sleep(1000);
