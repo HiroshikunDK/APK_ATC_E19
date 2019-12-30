@@ -94,7 +94,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 	}
 }
 
-
+//https://stackoverflow.com/questions/440133/how-do-i-create-a-random-alpha-numeric-string-in-c Based on the answers in this thread
 std::string random_string(std::string::size_type length)
 {
 	static auto& chrs = "0123456789"
