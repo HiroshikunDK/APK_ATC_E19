@@ -62,20 +62,20 @@ void RandomPlaneGenerator::GeneratePlanes()
 			{
 			case 1: // code to be executed if n = 1;
 				
-				tragectory._latitude = -20;
-				tragectory._longtitude = -20;
+				tragectory._latitude = (rand() % -30) -10;
+				tragectory._longtitude = (rand() % -30) - 10;
 				break;
 			case 2: // code to be executed if n = 2;
-				tragectory._latitude = 20;
-				tragectory._longtitude = -20;
+				tragectory._latitude = (rand() % 30) +10;
+				tragectory._longtitude = (rand() % -30) - 10;
 				break;
 			case 3:
-				tragectory._latitude = -20;
-				tragectory._longtitude = 20;
+				tragectory._latitude = (rand() % -30) - 10;
+				tragectory._longtitude = (rand() % 30) + 10;
 				break;
 			case 4:
-				tragectory._latitude = 20;
-				tragectory._longtitude = 20;
+				tragectory._latitude = (rand() % 30) + 10;
+				tragectory._longtitude = (rand() % 30) + 10;
 
 			}
 
