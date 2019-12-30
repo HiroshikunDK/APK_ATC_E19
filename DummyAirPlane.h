@@ -9,9 +9,11 @@ using namespace std;
 
 struct koordinates
 {
-	double _longtitude = 5; // In Metric?
-	double _latitude = 5; // In Metric?
-	double _altitude = 5; // In Metric?
+	double _longtitude = 0; // In Metric?
+	double _latitude = 0; // In Metric?
+	double _altitude = 0; // In Metric?
+
+
 
 	string printKoor() 
 	{
@@ -30,6 +32,13 @@ struct koordinates
 		}
 		else { return false; }
 	}
+
+	inline bool operator -(const koordinates& rhs)
+	{
+		_latitude = subtract(_latitude, rhs._latitude);
+		_longtitude = subtract(_longtitude, rhs._longtitude);
+	}
+
 	inline bool operator <=(const koordinates& rhs)
 	{
 		if ((_latitude <= rhs._latitude) && (_longtitude <= rhs._longtitude))
@@ -61,6 +70,11 @@ struct koordinates
 			return true;
 		}
 		else { return false; }
+	}
+
+	template<typename T> T subtract(T a, T b)  //Template Metaprogramming
+	{
+		return (a - b);
 	}
 };
 
@@ -96,9 +110,8 @@ public:
 
 	koordinates prevKoor;
 	koordinates currKoor;
-	
-private:
 	string name = "none";
+private:
 	string type = "none";
 };
 
