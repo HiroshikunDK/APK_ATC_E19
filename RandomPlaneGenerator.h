@@ -16,13 +16,12 @@ private:
 	vector<Plane> existingPlanes;
 	vector<Plane>::iterator ite;
 public:
-	string enviroment = "Production";
+	const string enviroment = "Production";
 	void GeneratePlanes();
 
 	RandomPlaneGenerator(string envir) {
 		enviroment = envir;
 		existingPlanes.assign(7, Plane("default"));
-		//_controlTower = controlTower;
 	}
 
 	//https://stackoverflow.com/questions/440133/how-do-i-create-a-random-alpha-numeric-string-in-c Based on the answers in this thread
