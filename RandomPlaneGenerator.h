@@ -16,7 +16,7 @@ private:
 	vector<Plane> existingPlanes;
 	vector<Plane>::iterator ite;
 public:
-	string enviroment = "Production";
+	const string enviroment = "Production";
 	void GeneratePlanes();
 	void ChangeAltitude(string name, int newHeight);
 
