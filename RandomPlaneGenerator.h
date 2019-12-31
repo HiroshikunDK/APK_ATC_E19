@@ -18,10 +18,11 @@ private:
 public:
 	string enviroment = "Production";
 	void GeneratePlanes();
+	void ChangeAltitude(string name, int newHeight);
 
 	RandomPlaneGenerator(string envir) {
 		enviroment = envir;
-		existingPlanes.assign(7, Plane("default"));
+		existingPlanes.assign(2, Plane("default"));
 		//_controlTower = controlTower;
 	}
 

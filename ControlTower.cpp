@@ -10,7 +10,35 @@
 
 
 using namespace std;
+string ControlTower::isPlanesTooClose() 
+{
+	int delta = 0;
+	for (int i = 0; i < _objList.size(); i++)
+	{
 
+		for (int j = 0; j < _objList.size(); j++)
+		{
+			if ((i != j))
+			{
+				//TODO: think a operator overload on Plane here - could be nicer
+				delta = _objList.at(i).currKoor._altitude - _objList.at(j).currKoor._altitude;
+				if (delta > -5000 && delta < 5000)
+				{
+					delta = _objList.at(i).currKoor._longtitude - _objList.at(j).currKoor._longtitude;
+					if (delta > -5000 && delta < 5000)
+					{
+						delta = _objList.at(i).currKoor._latitude - _objList.at(j).currKoor._latitude;
+						if (delta > -5000 && delta < 5000)
+						{
+							return _objList.at(i).name;
+						}
+					}
+				}
+			}
+		}
+	}
+	return "none";
+}
 
 vector<Plane> ControlTower::collisionDetection(vector<Plane> inVector)
 {
@@ -148,7 +176,7 @@ void ControlTower::printObj(Plane obj)
 {
 	cout << "Name: " << obj.name <<endl;
 	//cout << "Type: " << obj.name << endl;
-	cout << "Current Position: \n{\n" << obj.currKoor.printKoor() << "}" <<  endl;
+	cout << "Current Position: \n{\n" << myToString(obj.currKoor, printKoor) << "}" <<  endl; 
 	//cout << "Previous Position: \n{\n" << obj.prevKoor.printKoor() << "}" << endl;
 }
 
@@ -181,19 +209,17 @@ void ControlTower::objUpdate(Plane obj)
 			//obj.prevKoor = _objList[i].currKoor;
 			_objList[i] = obj;
 			// no check of other mutations on the plane class eg. type
-			if (i == 0)
-			{
-				printObj(obj);
-			}
+			//if (i == 0)
+			//{
+			//	printObj(obj);
+			//}
 			return;
 		}
 	}
 }
 void ControlTower::objRemove(Plane obj) 
 {
-	
 	vector<Plane>::iterator ite;
-
 	for (ite = _objList.begin(); ite !=_objList.end(); ite++)
 	{
 		if (ite->name == obj.name)
@@ -290,4 +316,16 @@ void ControlTower::broadcastHeightChange(string name, int newHeight)
 {
 	//Broadcaster should notify all objects needed.
 	broadcastAllHeightChange(name, newHeight);
+
 }
+
+
+string printKoor(koordinates k)
+{
+	string resString;
+	resString.append("Longtitude:	" + to_string(k._longtitude) + "\n");
+	resString.append("Latitude:		" + to_string(k._latitude) + "\n");
+	resString.append("Altitude:		" + to_string(k._altitude) + "\n");
+	return resString;
+}
+

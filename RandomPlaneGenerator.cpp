@@ -16,7 +16,7 @@ using namespace std;
 void RandomPlaneGenerator::GeneratePlanes()
 {
 	
-	while (true) {
+	//while (true) {
 		int planeAmount = 0;
 		for (int j = 0; j < existingPlanes.size(); j++) {
 			planeAmount++;
@@ -26,7 +26,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 
 			if(existingPlanes[j].name == "default")
 			{
-				auto ranName = random_string(8);
+				auto ranName = random_string(4);
 				existingPlanes[j].name = ranName; //= new Plane(name);
 			
 				coords._longtitude = (rand() % 999) + 100000;
@@ -71,7 +71,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 
 			nameToDirectionMap.insert({existingPlanes[j].name, tragectory});
 		}
-		cout << "Updates loaded into maps: " << to_string(existingPlanes.size()) << endl;
+		//cout << "Updates loaded into maps: " << to_string(existingPlanes.size()) << endl;
 
 		int i = 0;
 		for (auto ite = existingPlanes.begin(); ite < existingPlanes.end(); ite++) {
@@ -87,9 +87,23 @@ void RandomPlaneGenerator::GeneratePlanes()
 		}
 
 		Sleep(1000);
-	}
+	//}
 }
 
+void RandomPlaneGenerator::ChangeAltitude(string name, int altitude) 
+{
+	for (int i = 0; i < existingPlanes.size(); i++)
+	{
+		if (existingPlanes[i].name == name)
+		{
+			existingPlanes[i].currKoor._altitude = altitude;
+
+			cout << "Plane " << name <<", Found and Changed to: " << to_string(altitude) << endl;
+
+			return;
+		}
+	}
+}
 
 
 

@@ -13,17 +13,6 @@ struct koordinates
 	double _latitude = 0; // In Metric?
 	double _altitude = 0; // In Metric?
 
-
-
-	string printKoor() 
-	{
-		string resString;
-		resString.append("Longtitude:	" + to_string(_longtitude) +"\n");
-		resString.append("Latitude:		" + to_string(_latitude) + "\n");
-		resString.append("Altitude:		" + to_string(_altitude) + "\n");
-		return resString;
-	}
-
 	inline bool operator <(const koordinates& rhs)
 	{
 		if ((_latitude < rhs._latitude) && (_longtitude < rhs._longtitude))
@@ -80,9 +69,6 @@ struct koordinates
 		return (a - b);
 	}
 };
-
-
-
 
 
 class Plane
@@ -159,7 +145,7 @@ private:
 
 class ControlTower
 {
-	friend class Communications;
+	//friend class Communications;
 public:
 	ControlTower(vector<Plane> newObjList, Airspace newAirSpace)
 	{
@@ -168,6 +154,8 @@ public:
 	};
 	ControlTower() {};
 
+
+	string isPlanesTooClose();
 	vector<Plane> collisionDetection(vector<Plane> inVector); //iterator
 	//void initilizeCom(planespawner)
 	bool objExistInVec(const vector<Plane> inVector, Plane obj); //  
@@ -188,4 +176,13 @@ private:
 	vector<Plane> _objList = vector<Plane>();
 	
 	
+};
+
+string printKoor(koordinates k);
+//Kan bruges overalt
+template<typename t1, class Func>
+string myToString(t1 obj, Func f)
+{
+	string res = f(obj);
+	return res;
 };
