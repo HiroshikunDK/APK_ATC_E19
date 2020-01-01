@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "boost/signals2/signal.hpp"
-#include "./DummyAirPlane.h"
+#include "ControlTower.h"
 #include "signals2.h"
 #include "AirTrafficControl.h"
 

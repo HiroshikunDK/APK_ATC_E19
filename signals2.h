@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <boost/signals2/signal.hpp>
-#include "DummyAirPlane.h"
+#include "ControlTower.h"
 
 //https://www.boost.org/doc/libs/1_55_0/more/getting_started/windows.html
 //Look at step 4.1 - this should make it work 

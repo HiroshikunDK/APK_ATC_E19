@@ -1,7 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <map>
-#include "./DummyAirPlane.h"
+#include "ControlTower.h"
 #include "AirTrafficControl.h"
 #include <Rpc.h>
 #include <random>
@@ -21,7 +21,7 @@ public:
 	void ChangeAltitude(string name, int newHeight);
 
 	RandomPlaneGenerator(string envir) {
-		enviroment = envir;
+		//enviroment = envir;
 		existingPlanes.assign(2, Plane("default"));
 		//_controlTower = controlTower;
 	}

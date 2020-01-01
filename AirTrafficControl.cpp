@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <mutex>
-#include "./DummyAirPlane.h"
+#include "ControlTower.h"
 #include "Signals2.h"
 #include "RandomPlaneGenerator.h"
 

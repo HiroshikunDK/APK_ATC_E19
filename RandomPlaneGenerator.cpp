@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <map>
 #include "boost/signals2/signal.hpp"
-#include "./DummyAirPlane.h"
+#include "ControlTower.h"
 #include "AirTrafficControl.h"
 #include "RandomPlaneGenerator.h"
 #include <Rpc.h>
