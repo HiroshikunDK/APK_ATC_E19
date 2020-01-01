@@ -86,7 +86,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 			//i++;
 		}
 
-		sleep(1);
+		sleep(1); 
 	//}
 }
 

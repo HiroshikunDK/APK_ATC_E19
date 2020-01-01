@@ -45,14 +45,21 @@ void changeHeightFunctionRanGen(RandomPlaneGenerator* ptrCT1, string name, int n
 void transmitPlaneData(ControlTower* ptrCT, Plane newPlane)
 {
     ptrCT->objHandle(newPlane);
-    cout << "New plane handled" << endl;
+    //cout << "New plane handled" << endl;
 }
 
 // 
 void broadcastAllHeightChange(string name, int newheigh)
 {
+    if (newheigh > 100 && newheigh <1000000)
+    {
     ChangeHieghtSignal(&CT, name, newheigh);
     ChangeHieghtSignalRanGen(&rpg, name, newheigh);
+    }
+    else 
+    {
+        cout << newheigh << ", is not a valid height! Data not saved!" << endl;
+    }
 }
 
 void broadcastPlaneData(Plane newPlane)
@@ -68,7 +75,7 @@ void threadPrint(mutex& m, condition_variable& cond, condition_variable& inputco
     while (1) {
         
         unique_lock<mutex> ul(m);
-        cond.wait(ul, [&] {return flag;}); // hvis flaget er falsk lad koden passere
+        cond.wait(ul, [&] {return flag;}); // hvis flaget er true lad koden passere
         ClearScreen();
         CTR.printAllObj();
         
@@ -94,7 +101,7 @@ void threadPlaneSignals(mutex& m, condition_variable& cond, condition_variable& 
     while (1) 
     {
         unique_lock<mutex> ul(m);
-        cond.wait(ul, [&] {return !flag; }); // hvis flaget er falsk lad koden passere
+        cond.wait(ul, [&] {return !flag; }); // hvis flaget er false lad koden passere
         
         rpg.GeneratePlanes(); //sikkert at generer fly
     
