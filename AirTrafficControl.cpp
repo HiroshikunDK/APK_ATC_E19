@@ -8,9 +8,6 @@
 #include "Signals2.h"
 #include "RandomPlaneGenerator.h"
 
-// AirTrafficControl.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 void ClearScreen()
 {
     cout << string(50, '\n');
@@ -32,28 +29,22 @@ boost::signals2::signal<void(RandomPlaneGenerator*, string, int)> ChangeHieghtSi
 boost::signals2::signal<void(ControlTower*, Plane)> PlaneSignal;
 
 
-//disse funktioner kaldes og wrapper andre klassers implementering af  change height. 
+//Disse funktioner kaldes og wrapper andre klassers implementering af  change height. 
+
 void changeHeightFunction(ControlTower* ptrCT1, string name, int newheight)
 {
-    //cout << "Hello world" << endl;
     ptrCT1->changePlaneHeight(name, newheight);
     ptrCT1->printAllObj();
-    //cout << "Test ended" << endl;
 }
 
 void changeHeightFunctionRanGen(RandomPlaneGenerator* ptrCT1, string name, int newheight)
 {
-    //cout << "Hello world" << endl;
     ptrCT1->ChangeAltitude(name, newheight);
-    //ptrCT1->printAllObj();
-    //cout << "Test ended" << endl;
 }
 
 void transmitPlaneData(ControlTower* ptrCT, Plane newPlane)
 {
-    //cout << "Hello world" << endl;
     ptrCT->objHandle(newPlane);
-    //ptrCT->printAllObj();
     cout << "New plane handled" << endl;
 }
 
@@ -75,24 +66,26 @@ void broadcastPlaneData(Plane newPlane)
 void threadPrint(mutex& m, condition_variable& cond, condition_variable& inputcond, bool& flag, ControlTower& CTR)
 {
     while (1) {
+        
         unique_lock<mutex> ul(m);
-        cond.wait(ul, [&] {return flag; }); // hvis flaget er falsk lad koden passere
-        //flag = true;
-        cout << "Print T called" << endl;
-        //if(colission is true){flag = true}
+        cond.wait(ul, [&] {return flag;}); // hvis flaget er falsk lad koden passere
         ClearScreen();
         CTR.printAllObj();
+        
         string com = CTR.isPlanesTooClose();
         if(com !="none") 
         {
             cout << "Suggested to change height on Plane: " << com << endl;
+            flag = false;
             inputcond.notify_all();
         }
         else 
         {
-            cond.notify_all();
             flag = false;
+            cond.notify_all();
         }
+
+        
     }
 }
 
@@ -103,8 +96,6 @@ void threadPlaneSignals(mutex& m, condition_variable& cond, condition_variable& 
         unique_lock<mutex> ul(m);
         cond.wait(ul, [&] {return !flag; }); // hvis flaget er falsk lad koden passere
         
-        cout << "Plane sig T called" << endl;
-        //if(colission is true){flag = true}
         rpg.GeneratePlanes(); //sikkert at generer fly
     
         flag = true;
@@ -119,12 +110,6 @@ void threadChangeHeight(mutex& m, condition_variable& cond, condition_variable& 
 
     unique_lock<mutex> ul(m);
     inputcond.wait(ul, [&] {return flag; });
-    //flag = false;
-    cout << "Height Change T called" << endl;
-
-    vector<Plane> tmpList;
-    //flag = CTR.isPlanesTooClose(tmpList);
-
     string name;
     cout << "Handle colliding airplanes" << endl;
     cout << "Plane Name: ";
@@ -135,8 +120,8 @@ void threadChangeHeight(mutex& m, condition_variable& cond, condition_variable& 
     cin >> delta;
 
     CTR.broadcastHeightChange(name, delta);
+
     flag = false;
-    //flag = false;
     cond.notify_all();
     }
 }
@@ -149,7 +134,6 @@ void InitializeSystem()
     PlaneSignal.connect(&transmitPlaneData);
 
     mutex m;
-    mutex inM;
     condition_variable cond;
     condition_variable inputCond;
     bool flag = false;
@@ -161,50 +145,9 @@ void InitializeSystem()
     t0.join();
     t1.join();
     t2.join();
+
     //CT.printAllObj();
     
-
-    /*
-    while (cond.wait_for(lck, chrono::seconds(1)) == cv_status::timeout) 
-    { 
-        cout << "No Input detected " << endl;
-        rpg.GeneratePlanes();
-    }*/
-
-
-    cout << "The test Ended" << endl;
-    //Communications com(&CT);
-    //com.ChangeHeightSignal.connect(&changeHeightFunction);
-    /*
-    signalfunctor func;
-    func.ct = &CT;
-    func.name = "DC123";
-    func.newhieght = 9001;
-    */
-    //sigAlt.connect(func()); 
-
-    /*
-    Plane P1 = Plane("DC123");
-    Plane P2 = Plane("AC130");
-    Plane P3 = Plane("RCXD10");
-
-    broadcastPlaneData(P1);
-    broadcastPlaneData(P2);
-    broadcastPlaneData(P3);
-
-    CT.objRemovebyName();
-    */
-    //CT.printAllObj();
-
-   
-
-    //CT.changePlaneHeight("DC123", 9001);
-    //sig(&CT,"DC123", 9001);
-    //sigAlt("DC123", 9001);
-    //CT.broadcastHeightChange("DC123", 9001);
-    //boost::detail::Sleep(200);
-    //CT.printAllObj();
-
 }
 
 int main()

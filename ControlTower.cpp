@@ -5,7 +5,7 @@
 
 #include "boost/signals2/signal.hpp"
 #include "ControlTower.h"
-#include "signals2.h"
+#include "Signals2.h"
 #include "AirTrafficControl.h"
 
 
@@ -182,7 +182,7 @@ void ControlTower::printObj(Plane obj)
 
 void ControlTower::objHandle(Plane obj)
 {
-	
+	cout << obj.name << endl;
 	if (objExistInVec(_objList, obj)!=true)
 	{
 		objRecieve(obj);

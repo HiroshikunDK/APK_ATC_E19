@@ -1,4 +1,5 @@
-#include "signals2.h"
+#pragma once
+#include "Signals2.h"
 
 using namespace std;
 

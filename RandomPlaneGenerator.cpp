@@ -5,7 +5,7 @@
 #include "ControlTower.h"
 #include "AirTrafficControl.h"
 #include "RandomPlaneGenerator.h"
-#include <Rpc.h>
+//#include <Rpc.h>
 #include <random>
 #include <string>
 #pragma comment(lib, "Rpcrt4.lib")
@@ -73,7 +73,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 		}
 		//cout << "Updates loaded into maps: " << to_string(existingPlanes.size()) << endl;
 
-		int i = 0;
+		//int i = 0;
 		for (auto ite = existingPlanes.begin(); ite < existingPlanes.end(); ite++) {
 			
 			
@@ -83,10 +83,10 @@ void RandomPlaneGenerator::GeneratePlanes()
 			chosenPlane.currKoor = chosenPlane.currKoor - tragectory;
 			*ite = chosenPlane;
 			broadcastPlaneData(chosenPlane);
-			i++;
+			//i++;
 		}
 
-		Sleep(1000);
+		sleep(1);
 	//}
 }
 
