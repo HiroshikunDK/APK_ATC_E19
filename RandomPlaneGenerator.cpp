@@ -5,6 +5,7 @@
 #include "ControlTower.h"
 #include "AirTrafficControl.h"
 #include "RandomPlaneGenerator.h"
+#include <thread>
 //#include <Rpc.h>
 #include <random>
 #include <string>
@@ -85,8 +86,7 @@ void RandomPlaneGenerator::GeneratePlanes()
 			broadcastPlaneData(chosenPlane);
 			//i++;
 		}
-
-		sleep(1); 
+		boost::detail::Sleep(1000);
 	//}
 }
 

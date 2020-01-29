@@ -74,12 +74,13 @@ void threadPrint(mutex& m, condition_variable& cond, condition_variable& inputco
 {
     while (1) {
         
+        //cout << "Before Mutex" << endl;
         unique_lock<mutex> ul(m);
         cond.wait(ul, [&] {return flag;}); // hvis flaget er true lad koden passere
         ClearScreen();
         CTR.printAllObj();
-        
-        string com = CTR.isPlanesTooClose();
+        string com = "none";
+        com = CTR.isPlanesTooClose();
         if(com !="none") 
         {
             cout << "Suggested to change height on Plane: " << com << endl;
@@ -100,6 +101,7 @@ void threadPlaneSignals(mutex& m, condition_variable& cond, condition_variable& 
 {
     while (1) 
     {
+        //cout << "Before Mutex" << endl;
         unique_lock<mutex> ul(m);
         cond.wait(ul, [&] {return !flag; }); // hvis flaget er false lad koden passere
         
@@ -115,8 +117,11 @@ void threadChangeHeight(mutex& m, condition_variable& cond, condition_variable& 
     while (1) 
     {
 
+    //cout << "Before Mutex" << endl;
     unique_lock<mutex> ul(m);
     inputcond.wait(ul, [&] {return flag; });
+    
+    cout << "After Mutex" << endl;
     string name;
     cout << "Handle colliding airplanes" << endl;
     cout << "Plane Name: ";
@@ -127,9 +132,12 @@ void threadChangeHeight(mutex& m, condition_variable& cond, condition_variable& 
     cin >> delta;
 
     CTR.broadcastHeightChange(name, delta);
-
-    flag = false;
+    boost::detail::Sleep(25);
+    
+    inputcond.notify_all();
     cond.notify_all();
+    flag = false;
+
     }
 }
 
@@ -149,9 +157,11 @@ void InitializeSystem()
     thread t1(threadPlaneSignals, ref(m), ref(cond), ref(inputCond), ref(flag));
     thread t2(threadChangeHeight, ref(m), ref(cond), ref(inputCond), ref(flag), ref(CT));
     
-    t0.join();
-    t1.join();
     t2.join();
+    boost::detail::Sleep(500);
+    t0.join();
+    boost::detail::Sleep(500);
+    t1.join();
 
     //CT.printAllObj();
     
